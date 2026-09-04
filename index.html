@@ -1256,12 +1256,24 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
   /* save a copy of the enquiry, then carry on regardless of whether it worked */
   function record(data){
     if (!ENDPOINT) return;
+    var payload = JSON.stringify({action:'submit', data:data});
+
+    /* sendBeacon survives the page opening WhatsApp or the mail app a moment later;
+       a plain fetch can get cancelled mid-flight and the enquiry is lost. */
+    try {
+      if (navigator.sendBeacon){
+        var blob = new Blob([payload], {type:'text/plain;charset=UTF-8'});
+        if (navigator.sendBeacon(ENDPOINT, blob)) return;
+      }
+    } catch(e){}
+
     try {
       fetch(ENDPOINT, {
         method:'POST',
         mode:'no-cors',
+        keepalive:true,
         headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({action:'submit', data:data})
+        body:payload
       })['catch'](function(){});
     } catch(e){}
   }
