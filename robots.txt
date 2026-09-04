@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /inbox.html
+
+Sitemap: https://nexusfreshexport.in/sitemap.xml
