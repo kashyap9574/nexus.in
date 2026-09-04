@@ -1249,34 +1249,44 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
   /* Paste your Google Apps Script web app URL here so every enquiry is saved
      and shows up in the admin panel. Leave it empty and the form still works,
      it just opens WhatsApp or email without recording anything. */
-  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwJO45hXs_w_F9q1FWvEwQTV88zkTdngSfFyiQE7Y8pgOSekBGnMqC-pyOyj22-B2ukdw/exec';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbz6EIDEEmKxd6ar4XUpuvkZJ08MY17TvGehPcipmguuBXgtk3bXGnKsBkZfyx_dTm_c5w/exec';
 
   var WA = 'https://wa.me/919558249679?text=';
 
   /* save a copy of the enquiry, then carry on regardless of whether it worked */
   function record(data){
     if (!ENDPOINT) return;
-    var payload = JSON.stringify({action:'submit', data:data});
 
-    /* sendBeacon survives the page opening WhatsApp or the mail app a moment later;
-       a plain fetch can get cancelled mid-flight and the enquiry is lost. */
+    /* A hidden form posted into a hidden iframe. No fetch, no CORS, no beacon:
+       the browser treats it like any ordinary form submission, which is the one
+       thing that works the same in every browser and never gets cancelled. */
     try {
-      if (navigator.sendBeacon){
-        var blob = new Blob([payload], {type:'text/plain;charset=UTF-8'});
-        if (navigator.sendBeacon(ENDPOINT, blob)) return;
+      var frame = document.getElementById('nfeSink');
+      if (!frame){
+        frame = document.createElement('iframe');
+        frame.id = 'nfeSink';
+        frame.name = 'nfeSink';
+        frame.style.display = 'none';
+        document.body.appendChild(frame);
       }
-    } catch(e){}
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = ENDPOINT;
+      form.target = 'nfeSink';
+      form.style.display = 'none';
 
-    try {
-      fetch(ENDPOINT, {
-        method:'POST',
-        mode:'no-cors',
-        keepalive:true,
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:payload
-      })['catch'](function(){});
+      var field = document.createElement('input');
+      field.type = 'hidden';
+      field.name = 'payload';
+      field.value = JSON.stringify({action:'submit', data:data});
+      form.appendChild(field);
+
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(function(){ if (form.parentNode) form.parentNode.removeChild(form); }, 8000);
     } catch(e){}
   }
+
   var $  = function(s,c){ return (c||document).querySelector(s); };
   var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
 
