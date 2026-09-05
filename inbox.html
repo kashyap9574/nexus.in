@@ -301,7 +301,7 @@ footer{padding:34px 0 46px;text-align:center;font-family:var(--mono);font-size:1
       if (st && String(r.status || 'New') !== st) return false;
       if (co && r.country !== co) return false;
       if (!q) return true;
-      return [r.name,r.company,r.product,r.port,r.country,r.notes,r.id]
+      return [r.name,r.company,r.product,r.port,r.country,r.notes,r.id,r.email]
         .join(' ').toLowerCase().indexOf(q) > -1;
     });
   }
@@ -356,13 +356,16 @@ footer{padding:34px 0 46px;text-align:center;font-family:var(--mono);font-size:1
       '<div>' +
         '<h3>' + esc(r.name || 'Enquiry') + (r.company ? ' — ' + esc(r.company) : '') + '</h3>' +
         '<dl class="kv">' +
-          kv('Reference', r.id) + kv('Phone', r.phone) + kv('Country', r.country) +
+          kv('Reference', r.id) + kv('Phone', r.phone) + kv('Email', r.email) + kv('Country', r.country) +
           kv('Product', r.product) + kv('Size', r.size) + kv('Quantity', r.quantity) +
           kv('Discharge port', r.port) + kv('Asked us to reply by', r.via === 'mail' ? 'Email' : 'WhatsApp') +
         '</dl>' +
         (r.notes ? '<div class="msg">' + esc(r.notes) + '</div>' : '') +
         '<div class="acts">' +
           (waLink ? '<a class="btn btn--sm btn--solid" href="' + waLink + '" target="_blank" rel="noopener">Reply on WhatsApp</a>' : '') +
+          (r.email ? '<a class="btn btn--sm" href="mailto:' + esc(r.email) +
+             '?subject=' + encodeURIComponent('Nexus Fresh Export \u2014 your enquiry ' + r.id) +
+             '">Reply by email</a>' : '') +
           '<button class="btn btn--sm" data-copy="' + esc(r.phone) + '">Copy number</button>' +
           '<button class="btn btn--sm" data-copy="' + esc(summary(r)) + '">Copy full enquiry</button>' +
         '</div>' +
@@ -385,7 +388,7 @@ footer{padding:34px 0 46px;text-align:center;font-family:var(--mono);font-size:1
 
   function summary(r){
     return ['Reference: ' + r.id, 'Name: ' + (r.name||'-'), 'Company: ' + (r.company||'-'),
-      'Country: ' + (r.country||'-'), 'Phone: ' + (r.phone||'-'), 'Product: ' + (r.product||'-'),
+      'Country: ' + (r.country||'-'), 'Phone: ' + (r.phone||'-'), 'Email: ' + (r.email||'-'), 'Product: ' + (r.product||'-'),
       'Size: ' + (r.size||'-'), 'Quantity: ' + (r.quantity||'-'), 'Port: ' + (r.port||'-'),
       'Notes: ' + (r.notes||'-')].join('\n');
   }
@@ -449,7 +452,7 @@ footer{padding:34px 0 46px;text-align:center;font-family:var(--mono);font-size:1
   });
 
   $('#bCsv').addEventListener('click', function(){
-    var cols = ['id','received','name','company','country','phone','product','size',
+    var cols = ['id','received','name','company','country','phone','email','product','size',
                 'quantity','port','notes','status','internal_notes'];
     var q = function(v){ return '"' + String(v == null ? '' : v).replace(/"/g,'""') + '"'; };
     var csv = cols.join(',') + '\n' +
