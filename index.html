@@ -518,6 +518,24 @@ footer{background:var(--bg-deep);border-top:1px solid var(--rule-soft);padding:5
 .card.off .oos{opacity:1}
 @media(max-width:560px){.season-count{margin-left:0;width:100%}}
 
+
+/* ================= COUNTRY MAPS ================= */
+.mapdefs{position:absolute;width:0;height:0;overflow:hidden}
+.mapbg{position:absolute;top:50%;transform:translateY(-50%);z-index:0;
+  width:min(44%,520px);color:var(--accent-2);opacity:.055;pointer-events:none}
+.mapbg svg{width:100%;height:auto;fill:currentColor}
+.mapbg.right{right:-5%}
+.mapbg.left{left:-5%;color:var(--accent)}
+section > .wrap{position:relative;z-index:1}
+@media(max-width:900px){.mapbg{width:62%;opacity:.04}}
+
+.mkt{position:relative;overflow:hidden}
+.mkt-map{position:absolute;right:-8%;bottom:-12%;width:56%;color:var(--accent-2);
+  opacity:.10;pointer-events:none;transition:opacity .4s,transform .5s cubic-bezier(.2,.7,.25,1)}
+.mkt-map svg{width:100%;height:auto;fill:currentColor}
+.mkt:hover .mkt-map{opacity:.22;transform:translateY(-4px) scale(1.04)}
+.mkt h3,.mkt .port,.mkt .transit{position:relative;z-index:1}
+
 /* ================= THE VOYAGE ================= */
 .voyage{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 body[data-bg="off"] .voyage,
@@ -535,8 +553,16 @@ body[data-bg="leaves"] .voyage{display:none}
 .v-label.end{text-anchor:end}
 .v-ship .hull,.v-ship .bridge,.v-ship .funnel{fill:var(--accent-lt)}
 .v-ship .box{fill:var(--accent-2)}
-.v-ship .wake{stroke:var(--accent-lt);stroke-width:2;opacity:.45;
-  stroke-dasharray:5 6;animation:sail 1.4s linear infinite}
+.v-ship .deck{stroke:var(--bg);stroke-width:.9;opacity:.35;fill:none}
+.v-ship .wake{fill:none;stroke:var(--accent-lt);stroke-width:1.8;opacity:.4;stroke-linecap:round;
+  stroke-dasharray:4 7;animation:sail 1.6s linear infinite}
+.v-ship .bob{animation:bob 5.4s ease-in-out infinite;transform-origin:0 4px}
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-1.5px) rotate(-.9deg)}
+  55%{transform:translateY(.7px) rotate(.35deg)}
+  78%{transform:translateY(-1px) rotate(-.5deg)}
+}
 
 /* the ship's log, bottom left */
 .log{position:fixed;left:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:11px;
@@ -583,8 +609,6 @@ body[data-bg="__never__"] .bg-route{display:block}
 .bg-route .ship .box{fill:var(--accent-2)}
 .bg-route .ship .wake{stroke:var(--accent-lt);stroke-width:2;opacity:.45;
   stroke-dasharray:5 6;animation:sail 1.4s linear infinite}
-.bg-route .bob{animation:bob 3.4s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-2.5px) rotate(-1.2deg)}}
 .bg-route .port{stroke-width:2}
 .bg-route .port{fill:none;stroke:var(--accent-2);stroke-width:1.5}
 .bg-route .ping{fill:none;stroke:var(--accent-2);transform-origin:center;
@@ -767,6 +791,15 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 <body data-theme="forest" data-bg="route">
 
 <!-- ============ HEADER ============ -->
+<svg class="mapdefs" aria-hidden="true"><defs>
+  <symbol id="map-uae" viewBox="0 0 100.0 68.6"><path d="M0.0,30.6 L7.7,34.7 L21.3,33.6 L35.8,32.5 L49.4,35.9 L58.8,30.2 L66.0,26.7 L73.3,19.9 L80.6,14.2 L87.9,7.3 L93.1,1.6 L100.0,0.0 L98.3,13.0 L91.7,20.6 L88.5,31.3 L82.7,38.2 L75.4,58.8 L71.2,68.6 L20.2,68.6 L0.0,30.6 Z"/></symbol>
+  <symbol id="map-saudi" viewBox="0 0 100.0 82.7"><path d="M0.0,22.0 L6.6,14.6 L13.7,11.5 L19.9,3.7 L21.8,0.0 L27.5,1.6 L35.1,5.8 L47.9,15.7 L56.6,16.2 L58.3,19.3 L61.6,19.3 L64.0,18.3 L66.4,22.5 L69.7,24.6 L73.5,29.3 L73.2,34.5 L76.5,40.0 L78.2,40.0 L80.5,41.4 L85.1,50.1 L96.7,50.1 L100.0,53.4 L97.6,63.8 L82.5,69.1 L68.2,71.2 L58.8,79.5 L49.3,77.4 L41.7,77.4 L38.9,82.7 L30.3,69.1 L20.9,56.0 L13.7,41.3 L4.7,27.2 L0.0,22.0 Z"/></symbol>
+  <symbol id="map-qatar" viewBox="0 0 48.6 100.0"><path d="M0.6,98.1 L3.4,84.4 L0.0,68.7 L2.3,53.1 L7.9,43.8 L14.7,33.1 L17.5,20.6 L26.0,8.1 L33.3,0.0 L39.5,4.4 L44.1,14.4 L48.6,25.0 L45.2,37.5 L39.5,48.1 L36.2,58.1 L46.3,70.6 L48.6,83.1 L36.2,95.6 L19.2,100.0 L0.6,98.1 Z"/></symbol>
+  <symbol id="map-oman" viewBox="0 0 77.0 100.0"><path d="M43.1,0.0 L39.6,8.5 L44.1,19.7 L51.2,26.1 L59.1,29.3 L65.0,29.8 L69.9,36.7 L73.4,40.4 L77.0,41.3 L71.9,57.4 L64.0,68.1 L57.1,79.8 L42.3,90.4 L29.5,100.0 L19.7,100.0 L0.0,78.7 L31.5,68.1 L36.4,46.8 L31.5,35.6 L35.0,26.1 L37.7,22.9 L39.2,17.9 L43.1,0.0 Z"/></symbol>
+  <symbol id="map-kuwait" viewBox="0 0 96.6 100.0"><path d="M0.0,63.3 L19.3,36.7 L35.9,6.3 L63.5,0.0 L82.8,7.0 L85.5,19.0 L73.4,25.3 L62.3,34.2 L80.0,41.8 L88.8,48.1 L96.6,63.3 L89.9,77.2 L85.5,88.6 L57.9,100.0 L19.3,100.0 L0.0,63.3 Z"/></symbol>
+  <symbol id="map-bahrain" viewBox="0 0 39.3 100.0"><path d="M5.6,52.1 L0.0,22.9 L11.2,0.0 L30.0,4.2 L39.3,31.2 L35.6,60.4 L30.0,85.4 L20.6,100.0 L11.2,87.5 L5.6,52.1 Z"/></symbol>
+</defs></svg>
+
 <!-- The voyage: the ship's position is your scroll position. -->
 <div class="voyage" aria-hidden="true">
   <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
@@ -784,13 +817,14 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
     <text class="v-label end" x="1114" y="109">JEBEL ALI</text>
     <g id="voyageShip" class="v-ship">
       <g class="bob">
-        <path class="wake" d="M-30,9 h-30"/>
-        <path class="hull" d="M-24,3 H19 L27,7 L19,11 H-20 Z"/>
-        <rect class="box" x="-20" y="-2" width="9"  height="5"/>
-        <rect class="box" x="-9"  y="-4" width="11" height="7"/>
-        <rect class="box" x="3"   y="-1" width="8"  height="4"/>
-        <path class="bridge" d="M-24,3 V-7 h6 V3 Z"/>
-        <path class="funnel" d="M-22,-7 V-12 h3 V-7 Z"/>
+        <path class="wake" d="M-34,7.5 C-42,8.2 -50,6.8 -58,7.6"/>
+        <path class="hull" d="M-30,3 H24 C29,3 33,4.3 36,6 C32.5,8.2 29,9.6 24.5,9.6 H-25.5 C-28.4,9.6 -30,8 -30,5.8 Z"/>
+        <path class="deck" d="M-28,3.6 H31"/>
+        <rect class="box"  x="-19"   y="-1.5" width="10" height="4.5" rx="1.1"/>
+        <rect class="box"  x="-7.5"  y="-3.5" width="12" height="6.5" rx="1.2"/>
+        <rect class="box"  x="6"     y="-0.8" width="9"  height="3.8" rx="1"/>
+        <rect class="bridge" x="-28.5" y="-5.5" width="6.5" height="8.5" rx="1.4"/>
+        <rect class="funnel" x="-26.8" y="-9.5" width="3"  height="4.4" rx="1"/>
       </g>
     </g>
   </svg>
@@ -916,6 +950,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
 <!-- ============ ABOUT ============ -->
 <section class="band">
+  <div class="mapbg right" aria-hidden="true"><svg viewBox="0 0 100.0 82.7"><use href="#map-saudi"/></svg></div>
   <div class="wrap about">
     <div>
       <h2>A short supply chain, <em>run by people who answer the phone.</em></h2>
@@ -948,6 +983,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
 <!-- ============ PRODUCE ============ -->
 <section class="band band--tight" id="produce">
+  <div class="mapbg left" aria-hidden="true"><svg viewBox="0 0 100.0 68.6"><use href="#map-uae"/></svg></div>
   <div class="wrap">
     <div class="head">
       <span class="tag">Current export lines</span>
@@ -1135,6 +1171,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
 <!-- ============ PROCESS ============ -->
 <section class="band" id="process">
+  <div class="mapbg right" aria-hidden="true"><svg viewBox="0 0 77.0 100.0"><use href="#map-oman"/></svg></div>
   <div class="wrap">
     <div class="head">
       <span class="tag">Order to arrival</span>
@@ -1162,18 +1199,19 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
     </div>
 
     <div class="markets">
-      <div class="mkt"><h3>United Arab Emirates</h3><p class="port">All seven emirates — Jebel Ali, Port Rashid, Khalifa, Zayed, Port Khalid, Hamriyah, Khorfakkan, Ajman, UAQ, Saqr, Fujairah</p><div class="transit"><span>Sea transit</span><b>5–7 days</b></div></div>
-      <div class="mkt"><h3>Saudi Arabia</h3><p class="port">Dammam · Jeddah</p><div class="transit"><span>Sea transit</span><b>7–10 days</b></div></div>
-      <div class="mkt"><h3>Qatar</h3><p class="port">Hamad</p><div class="transit"><span>Sea transit</span><b>7–9 days</b></div></div>
-      <div class="mkt"><h3>Oman</h3><p class="port">Sohar · Salalah</p><div class="transit"><span>Sea transit</span><b>4–6 days</b></div></div>
-      <div class="mkt"><h3>Kuwait</h3><p class="port">Shuwaikh · Shuaiba</p><div class="transit"><span>Sea transit</span><b>8–11 days</b></div></div>
-      <div class="mkt"><h3>Bahrain</h3><p class="port">Khalifa Bin Salman</p><div class="transit"><span>Sea transit</span><b>7–10 days</b></div></div>
+      <div class="mkt"><div class="mkt-map" aria-hidden="true"><svg viewBox="0 0 100.0 68.6"><use href="#map-uae"/></svg></div><h3>United Arab Emirates</h3><p class="port">All seven emirates — Jebel Ali, Port Rashid, Khalifa, Zayed, Port Khalid, Hamriyah, Khorfakkan, Ajman, UAQ, Saqr, Fujairah</p><div class="transit"><span>Sea transit</span><b>5–7 days</b></div></div>
+      <div class="mkt"><div class="mkt-map" aria-hidden="true"><svg viewBox="0 0 100.0 82.7"><use href="#map-saudi"/></svg></div><h3>Saudi Arabia</h3><p class="port">Dammam · Jeddah</p><div class="transit"><span>Sea transit</span><b>7–10 days</b></div></div>
+      <div class="mkt"><div class="mkt-map" aria-hidden="true"><svg viewBox="0 0 48.6 100.0"><use href="#map-qatar"/></svg></div><h3>Qatar</h3><p class="port">Hamad</p><div class="transit"><span>Sea transit</span><b>7–9 days</b></div></div>
+      <div class="mkt"><div class="mkt-map" aria-hidden="true"><svg viewBox="0 0 77.0 100.0"><use href="#map-oman"/></svg></div><h3>Oman</h3><p class="port">Sohar · Salalah</p><div class="transit"><span>Sea transit</span><b>4–6 days</b></div></div>
+      <div class="mkt"><div class="mkt-map" aria-hidden="true"><svg viewBox="0 0 96.6 100.0"><use href="#map-kuwait"/></svg></div><h3>Kuwait</h3><p class="port">Shuwaikh · Shuaiba</p><div class="transit"><span>Sea transit</span><b>8–11 days</b></div></div>
+      <div class="mkt"><div class="mkt-map" aria-hidden="true"><svg viewBox="0 0 39.3 100.0"><use href="#map-bahrain"/></svg></div><h3>Bahrain</h3><p class="port">Khalifa Bin Salman</p><div class="transit"><span>Sea transit</span><b>7–10 days</b></div></div>
     </div>
   </div>
 </section>
 
 <!-- ============ QUALITY ============ -->
 <section class="band comply" id="quality">
+  <div class="mapbg left" aria-hidden="true"><svg viewBox="0 0 48.6 100.0"><use href="#map-qatar"/></svg></div>
   <div class="wrap">
     <div class="head">
       <span class="tag">Registrations and checks</span>
@@ -1208,6 +1246,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
 <!-- ============ FAQ ============ -->
 <section class="band band--tight">
+  <div class="mapbg right" aria-hidden="true"><svg viewBox="0 0 96.6 100.0"><use href="#map-kuwait"/></svg></div>
   <div class="wrap">
     <div class="head">
       <span class="tag">Before you order</span>
@@ -1227,6 +1266,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
 <!-- ============ CONTACT ============ -->
 <section class="band" id="contact">
+  <div class="mapbg left" aria-hidden="true"><svg viewBox="0 0 39.3 100.0"><use href="#map-bahrain"/></svg></div>
   <div class="wrap">
     <div class="head">
       <span class="tag">Get in touch</span>
@@ -1467,7 +1507,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
     } catch(e){ laneLen = 0; }
   }
 
-  function sail(p){
+  function drawSail(p){
     if (!laneLen) return;
     lane.style.strokeDashoffset = (laneLen * (1 - p)).toFixed(1);
     if (ship){
@@ -1484,6 +1524,26 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
       logDay.textContent = p > 0.985 ? 'Docked' : 'Day ' + day + ' of 6';
     }
     document.body.classList.toggle('sailing', p > 0.02);
+  }
+
+  /* easing toward the scroll position — the ship glides rather than snapping,
+     which also smooths out the jumpiness of trackpad and phone scrolling */
+  var sailTarget = 0, sailNow = 0, sailRunning = false;
+  function sailLoop(){
+    var gap = sailTarget - sailNow;
+    if (Math.abs(gap) < 0.0004){
+      sailNow = sailTarget;
+      sailRunning = false;
+      drawSail(sailNow);
+      return;
+    }
+    sailNow += gap * 0.085;
+    drawSail(sailNow);
+    requestAnimationFrame(sailLoop);
+  }
+  function sail(p){
+    sailTarget = p;
+    if (!sailRunning){ sailRunning = true; requestAnimationFrame(sailLoop); }
   }
   var heroLayers = $$('.hero .bg-layer');
   var ticking = false;
