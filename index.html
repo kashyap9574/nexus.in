@@ -224,6 +224,7 @@ nav{display:flex;align-items:center;gap:30px}
 nav a{font-size:13.5px;color:var(--muted);transition:color .2s}
 nav a:hover{color:var(--text)}
 .bar .btn{padding:11px 20px;font-size:13px}
+nav > .btn{display:none}
 .burger{display:none;background:none;border:0;padding:8px;cursor:pointer}
 .burger span{display:block;width:22px;height:1.5px;background:var(--text);margin:5px 0;transition:transform .3s,opacity .3s}
 .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
@@ -686,7 +687,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
   }
   nav.open{transform:none}
   nav a{padding:15px 0;border-bottom:1px solid var(--rule-soft);font-size:16px}
-  nav .btn{margin-top:18px;justify-content:center}
+  nav > .btn{display:inline-flex;margin-top:18px;justify-content:center}
   .burger{display:block}
   .bar .btn.desk{display:none}
 }
@@ -1136,6 +1137,9 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
             </div>
           </div>
         </div>
+        <div><label for="fEmail">Business email</label>
+          <input id="fEmail" type="email" autocomplete="email" placeholder="buyer@company.ae">
+        </div>
         <div><label for="fProduct">Product</label>
           <select id="fProduct">
             <option>Red onion</option><option>Potato</option><option>Green chilli</option><option>Okra</option>
@@ -1538,6 +1542,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
       company:  v('#fCompany'),
       country:  v('#fCountry'),
       phone:    phone,
+      email:    v('#fEmail'),
       product:  v('#fProduct'),
       size:     v('#fSize'),
       quantity: v('#fQty'),
@@ -1552,6 +1557,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
       'Company: '  + (d.company  || '-') + '\n' +
       'Country: '  + (d.country  || '-') + '\n' +
       'Phone: '    + (d.phone    || '-') + '\n' +
+      'Email: '    + (d.email    || '-') + '\n' +
       'Product: '  + (d.product  || '-') + '\n' +
       'Size: '     + (d.size     || '-') + '\n' +
       'Quantity: ' + (d.quantity || '-') + '\n' +
