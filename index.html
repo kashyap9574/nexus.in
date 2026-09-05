@@ -307,8 +307,12 @@ nav a:hover{color:var(--text)}
 .shot{position:relative;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center;
   background:var(--panel-2);border-bottom:1px solid var(--rule-soft)}
 .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transition:transform .8s cubic-bezier(.2,.7,.25,1)}
-.card:hover .shot img{transform:scale(1.045)}
+  transform:scale(1.18);transition:transform 1.1s cubic-bezier(.16,.84,.3,1)}
+.card.in .shot img{transform:scale(1)}
+.shot::after{content:'';position:absolute;inset:0;background:var(--bg-2);z-index:2;
+  transform:translateY(0);transition:transform .95s cubic-bezier(.7,0,.2,1)}
+.card.in .shot::after{transform:translateY(-101%)}
+.card.in:hover .shot img{transform:scale(1.06)}
 .card-body{padding:24px 26px 26px}
 .card:nth-child(3n+2) .shot{background:color-mix(in srgb,var(--accent) 7%,var(--panel-2))}
 .card:nth-child(3n) .shot{background:color-mix(in srgb,var(--accent-3) 7%,var(--panel-2))}
@@ -387,6 +391,7 @@ nav a:hover{color:var(--text)}
 .form select optgroup{background:var(--bg);color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:.1em}
 .form .btn{justify-content:center;margin-top:4px}
 #formNote{font-family:var(--mono);font-size:11.5px;color:var(--accent-2);min-height:17px;letter-spacing:.05em}
+#formNote.bad{color:var(--accent-3)}
 
 /* enquiry panel */
 .form{background:var(--panel-2);border:1px solid var(--rule-soft);border-radius:8px;
@@ -408,6 +413,14 @@ nav a:hover{color:var(--text)}
 .tel input:not(.dial){border-radius:0 4px 4px 0;border-left-color:transparent}
 .tel:focus-within .dial{border-color:var(--accent);border-right:0}
 .tel:focus-within input:not(.dial){border-color:var(--accent)}
+
+.send-row{display:flex;gap:10px;align-items:stretch}
+.send-row .btn{flex:1;justify-content:center}
+.btn-wa{width:52px;flex:none;border-radius:999px;display:grid;place-items:center;
+  border:1px solid rgba(31,168,85,.45);background:rgba(31,168,85,.12);color:#1FA855;
+  transition:background .25s,color .25s,border-color .25s,transform .25s}
+.btn-wa:hover{background:#1FA855;color:#fff;border-color:#1FA855;transform:translateY(-2px)}
+.btn-wa svg{width:23px;height:23px}
 
 .seg{display:flex;gap:8px}
 .seg button{flex:1;background:var(--input-bg);border:1px solid var(--rule-soft);border-radius:4px;
@@ -470,7 +483,7 @@ footer{background:var(--bg-deep);border-top:1px solid var(--rule-soft);padding:5
 .wa svg{width:27px;height:27px;color:#fff}
 
 /* ---------- reveal ---------- */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv{opacity:0;transform:translateY(40px) scale(.97);transition:opacity .9s cubic-bezier(.16,.84,.3,1),transform .9s cubic-bezier(.16,.84,.3,1)}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 
@@ -495,20 +508,24 @@ body[data-bg="route"]  .bg-route{display:block}
 
 /* route — the sailing lane from Gujarat to the Gulf */
 .bg-route svg{position:absolute;inset:0;width:100%;height:100%}
-.bg-route .grid{stroke:var(--text);opacity:.05;stroke-width:1}
-.bg-route .lane{fill:none;stroke:var(--rule-soft);stroke-width:1.5}
-.bg-route .dash{fill:none;stroke:var(--accent);stroke-width:1.6;opacity:.55;
+.bg-route .grid{stroke:var(--text);opacity:.09;stroke-width:1}
+.bg-route .lane{fill:none;stroke:var(--text);opacity:.16;stroke-width:1.5}
+.bg-route .dash{fill:none;stroke:var(--accent);stroke-width:2.4;opacity:.9;
   stroke-dasharray:9 11;animation:sail 1.1s linear infinite}
 @keyframes sail{to{stroke-dashoffset:-20}}
-.bg-route .ship .hull,.bg-route .ship .bridge,.bg-route .ship .funnel{fill:var(--accent-lt);opacity:.75}
-.bg-route .ship .box{fill:var(--accent-2);opacity:.75}
-.bg-route .ship .wake{stroke:var(--accent-lt);stroke-width:1.5;opacity:.3;
+.bg-route .ship{transform-box:fill-box}
+.bg-route .ship .hull,.bg-route .ship .bridge,.bg-route .ship .funnel{fill:var(--accent-lt)}
+.bg-route .ship .box{fill:var(--accent-2)}
+.bg-route .ship .wake{stroke:var(--accent-lt);stroke-width:2;opacity:.45;
   stroke-dasharray:5 6;animation:sail 1.4s linear infinite}
+.bg-route .bob{animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-2.5px) rotate(-1.2deg)}}
+.bg-route .port{stroke-width:2}
 .bg-route .port{fill:none;stroke:var(--accent-2);stroke-width:1.5}
 .bg-route .ping{fill:none;stroke:var(--accent-2);transform-origin:center;
   animation:ping 3.2s ease-out infinite}
 .bg-route .ping.b{animation-delay:1.6s}
-@keyframes ping{0%{r:5;opacity:.7}70%{r:34;opacity:0}100%{opacity:0}}
+@keyframes ping{0%{r:5;opacity:.9}70%{r:46;opacity:0}100%{opacity:0}}
 
 @media(prefers-reduced-motion:reduce){
   .bg-waves path,.bg-route .dash,.bg-route .ping{animation:none}
@@ -540,15 +557,15 @@ body[data-theme="paper"] .btn--gold::after{background:linear-gradient(90deg,tran
   background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .12s linear}
 
 /* --- hero load sequence --- */
-.hero .up{opacity:0;transform:translateY(18px)}
+.hero .up{opacity:0;transform:translateY(34px)}
 .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
-.hero h1 .ln>span{display:block;transform:translateY(108%)}
-.hero .crate{opacity:0;transform:translateY(26px) scale(.985)}
+.hero h1 .ln>span{display:block;transform:translateY(115%) rotate(4deg);transform-origin:left bottom}
+.hero .crate{opacity:0;transform:translateX(46px) translateY(34px) scale(.94)}
 .hero .crate dt,.hero .crate dd,.hero .crate .split{opacity:0}
 
-body.ready .hero .up{animation:riseIn .85s cubic-bezier(.2,.7,.25,1) forwards;animation-delay:var(--d,0s)}
-body.ready .hero h1 .ln>span{animation:lineIn 1s cubic-bezier(.16,.84,.3,1) forwards;animation-delay:var(--d,0s)}
-body.ready .hero .crate{animation:riseIn .95s cubic-bezier(.2,.7,.25,1) .5s forwards}
+body.ready .hero .up{animation:riseIn 1s cubic-bezier(.16,.84,.3,1) forwards;animation-delay:var(--d,0s)}
+body.ready .hero h1 .ln>span{animation:lineIn 1.25s cubic-bezier(.16,.9,.28,1) forwards;animation-delay:var(--d,0s)}
+body.ready .hero .crate{animation:riseIn 1.15s cubic-bezier(.16,.84,.3,1) .55s forwards}
 body.ready .hero .crate dt,
 body.ready .hero .crate dd,
 body.ready .hero .crate .split{animation:fadeIn .6s ease forwards}
@@ -588,6 +605,11 @@ body.ready .route i{animation:drawX .7s cubic-bezier(.2,.7,.25,1) .3s forwards}
 
 /* --- reveal with stagger --- */
 .rv{transition-delay:var(--d,0s)}
+
+/* headings wipe up from behind a mask */
+.head h2{clip-path:inset(0 0 105% 0);transform:translateY(24px);
+  transition:clip-path 1.05s cubic-bezier(.16,.84,.3,1) .1s,transform 1.05s cubic-bezier(.16,.84,.3,1) .1s}
+.head.in h2{clip-path:inset(0 0 -20% 0);transform:none}
 
 /* --- produce cards --- */
 .card{overflow:hidden}
@@ -729,6 +751,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
       <circle class="port"   cx="150"  cy="500" r="5"/>
       <circle class="port"   cx="1060" cy="170" r="5"/>
       <g class="ship">
+        <g class="bob">
         <path class="wake" d="M-30,9 h-26"/>
         <path class="hull" d="M-24,3 H19 L27,7 L19,11 H-20 Z"/>
         <rect class="box" x="-20" y="-2" width="9"  height="5"/>
@@ -736,6 +759,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
         <rect class="box" x="3"   y="-1" width="8"  height="4"/>
         <path class="bridge" d="M-24,3 V-7 h6 V3 Z"/>
         <path class="funnel" d="M-22,-7 V-12 h3 V-7 Z"/>
+        </g>
         <animateMotion dur="14s" repeatCount="indefinite" rotate="auto">
           <mpath href="#lane"/>
         </animateMotion>
@@ -769,15 +793,15 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
     <aside class="crate">
       <dl>
-        <dt>Reefer temperature</dt><dd>2–8<small>°C</small></dd>
+        <dt>Reefer temperature</dt><dd>2&ndash;<span class="num" data-to="8">0</span><small>°C</small></dd>
         <div class="split"></div>
-        <dt>Farm to port</dt><dd>48<small>hrs</small></dd>
+        <dt>Farm to port</dt><dd><span class="num" data-to="48">0</span><small>hrs</small></dd>
         <div class="split"></div>
-        <dt>Sailing to Jebel Ali</dt><dd>5–7<small>days</small></dd>
+        <dt>Sailing to Jebel Ali</dt><dd>5&ndash;<span class="num" data-to="7">0</span><small>days</small></dd>
         <div class="split"></div>
-        <dt>Minimum order</dt><dd>1<small>container</small></dd>
+        <dt>Minimum order</dt><dd><span class="num" data-to="1">0</span><small>container</small></dd>
         <div class="split"></div>
-        <dt>Vegetable lines</dt><dd>20<small>+</small></dd>
+        <dt>Vegetable lines</dt><dd><span class="num" data-to="20">0</span><small>+</small></dd>
       </dl>
     </aside>
   </div>
@@ -1168,14 +1192,13 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
         </div>
         <div><label for="fMsg">Anything else</label><textarea id="fMsg" placeholder="Packing, grade, arrival window"></textarea></div>
 
-        <div><label id="viaLbl">Send it as</label>
-          <div class="seg" role="group" aria-labelledby="viaLbl" id="fVia">
-            <button type="button" data-via="wa" aria-pressed="true">WhatsApp message</button>
-            <button type="button" data-via="mail" aria-pressed="false">Email</button>
-          </div>
+        <div class="send-row">
+          <button class="btn btn--gold" type="submit" id="fSend">Send enquiry</button>
+          <a class="btn-wa" id="waSend" href="#" target="_blank" rel="noopener"
+             title="Send these details on WhatsApp instead" aria-label="Send these details on WhatsApp instead">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-2.4-.9-4-3.3-4.1-3.5-.1-.2-1-1.4-1-2.6s.6-1.8.9-2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2 .9.7 1.5.9 1.8 1 .2.1.4.1.5-.1l.8-.9c.2-.2.3-.2.6-.1l1.8.9c.2.1.4.2.5.3v1.6z"/></svg>
+          </a>
         </div>
-
-        <button class="btn btn--gold" type="submit" id="fSend">Open my enquiry in WhatsApp</button>
         <p id="formNote" role="status" aria-live="polite"></p>
       </form>
 
@@ -1298,6 +1321,7 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
 
   /* sticky header + scroll progress + process line, one rAF-throttled handler */
   var hdr = $('#hdr'), prog = $('#prog'), steps = $('.steps');
+  var heroLayers = $$('.hero .bg-layer');
   var ticking = false;
 
   function frame(){
@@ -1310,6 +1334,13 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
       var doc = document.documentElement;
       var max = (doc.scrollHeight - window.innerHeight) || 1;
       prog.style.width = Math.min(100, Math.max(0, (y / max) * 100)) + '%';
+    }
+
+    if (heroLayers.length && y < window.innerHeight * 1.2){
+      var shift = y * 0.28;
+      for (var i = 0; i < heroLayers.length; i++){
+        heroLayers[i].style.transform = 'translate3d(0,' + shift.toFixed(1) + 'px,0)';
+      }
     }
 
     if (steps){
@@ -1340,6 +1371,23 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
       });
     });
   }
+
+  /* the panel figures count up as it slides in */
+  function countUp(el){
+    var to = parseFloat(el.getAttribute('data-to')) || 0, start = null, dur = 1200;
+    function step(ts){
+      if (start === null) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $$('.crate .num').forEach(function(el){
+    if (reduce){ el.textContent = el.getAttribute('data-to'); return; }
+    setTimeout(function(){ countUp(el); }, 850);
+  });
 
   /* ticker duplication for a seamless loop */
   var track = $('#ticker');
@@ -1479,72 +1527,87 @@ body.ready .wa{animation:pop .5s cubic-bezier(.3,1.4,.5,1) 1.4s forwards}
   syncDial();
 
   /* ---- enquiry form ---- */
-  var form = $('#enquiry'), note = $('#formNote'), send = $('#fSend'), viaWrap = $('#fVia');
-  var via = 'wa';
+  var form = $('#enquiry'), note = $('#formNote'), send = $('#fSend'), waBtn = $('#waSend');
 
-  if (viaWrap){
-    $$('button', viaWrap).forEach(function(b){
-      b.addEventListener('click', function(){
-        via = b.getAttribute('data-via') || 'wa';
-        $$('button', viaWrap).forEach(function(x){
-          x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
-        });
-        if (send) send.textContent = via === 'wa' ? 'Open my enquiry in WhatsApp' : 'Open my enquiry in email';
-        if (note) note.textContent = '';
-      });
+  function fields(){
+    var v = function(id){ var el = $(id); return el && el.value ? el.value.trim() : ''; };
+    var num = v('#fPhone'), code = v('#fDial');
+    var phone = !num ? '' : (num.charAt(0) === '+' || !code || code === '+') ? num : code + ' ' + num;
+    return {
+      name:     v('#fName'),
+      company:  v('#fCompany'),
+      country:  v('#fCountry'),
+      phone:    phone,
+      product:  v('#fProduct'),
+      size:     v('#fSize'),
+      quantity: v('#fQty'),
+      port:     v('#fPort'),
+      notes:    v('#fMsg')
+    };
+  }
+
+  function asText(d){
+    return 'Enquiry from nexusfreshexport.in\n\n' +
+      'Name: '     + (d.name     || '-') + '\n' +
+      'Company: '  + (d.company  || '-') + '\n' +
+      'Country: '  + (d.country  || '-') + '\n' +
+      'Phone: '    + (d.phone    || '-') + '\n' +
+      'Product: '  + (d.product  || '-') + '\n' +
+      'Size: '     + (d.size     || '-') + '\n' +
+      'Quantity: ' + (d.quantity || '-') + '\n' +
+      'Port: '     + (d.port     || '-') + '\n' +
+      'Notes: '    + (d.notes    || '-');
+  }
+
+  /* the WhatsApp button carries whatever is filled in so far */
+  function refreshWa(){
+    if (!waBtn) return;
+    var d = fields();
+    var msg = d.name ? asText(d) : 'Hello Nexus Fresh Export, I would like a quotation for fresh vegetables.';
+    waBtn.setAttribute('href', WA + encodeURIComponent(msg));
+  }
+  if (form){
+    form.addEventListener('input', refreshWa);
+    form.addEventListener('change', refreshWa);
+  }
+  refreshWa();
+
+  if (waBtn){
+    waBtn.addEventListener('click', function(){
+      var d = fields();
+      if (d.name) record(d);          /* keep a copy of it too */
     });
   }
 
+  /* Send only files the enquiry. Nothing opens, nothing navigates away. */
   if (form){
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
-      var v = function(id){ var el = $(id); return el && el.value ? el.value.trim() : ''; };
-      var fullPhone = function(){
-        var num = v('#fPhone');
-        if (!num) return '';
-        var code = v('#fDial');
-        if (!code || code === '+') return num;
-        return num.charAt(0) === '+' ? num : code + ' ' + num;
-      };
-      var name = v('#fName');
-      if (!name){
-        if (note) note.textContent = 'Add your name so we know who is writing.';
+      var d = fields();
+
+      if (!d.name){
+        if (note){ note.className = 'bad'; note.textContent = 'Add your name so we know who is writing.'; }
         var n = $('#fName'); if (n) n.focus();
         return;
       }
-      var body =
-        'Name: '     + name + '\n' +
-        'Company: '  + (v('#fCompany') || '-') + '\n' +
-        'Country: '  + (v('#fCountry') || '-') + '\n' +
-        'Phone: '    + (fullPhone() || '-') + '\n' +
-        'Product: '  + (v('#fProduct') || '-') + '\n' +
-        'Size: '     + (v('#fSize')    || '-') + '\n' +
-        'Quantity: ' + (v('#fQty')     || '-') + '\n' +
-        'Port: '     + (v('#fPort')    || 'not decided') + '\n' +
-        'Notes: '    + (v('#fMsg')     || '-');
-
-      record({
-        name:     name,
-        company:  v('#fCompany'),
-        country:  v('#fCountry'),
-        phone:    fullPhone(),
-        product:  v('#fProduct'),
-        size:     v('#fSize'),
-        quantity: v('#fQty'),
-        port:     v('#fPort'),
-        notes:    v('#fMsg'),
-        via:      via
-      });
-
-      if (via === 'mail'){
-        window.location.href = 'mailto:info@nexusfreshexport.in'
-          + '?subject=' + encodeURIComponent('Enquiry — ' + (v('#fProduct') || 'vegetables') + ' for ' + (v('#fCountry') || 'the Gulf'))
-          + '&body=' + encodeURIComponent(body);
-        if (note) note.textContent = 'Opening your email app with the enquiry filled in.';
-      } else {
-        window.open(WA + encodeURIComponent('Enquiry from nexusfreshexport.in\n\n' + body), '_blank', 'noopener');
-        if (note) note.textContent = 'Opening WhatsApp. If nothing happens, write to info@nexusfreshexport.in';
+      if (!d.phone && !ENDPOINT){
+        if (note){ note.className = 'bad'; note.textContent = 'Add a phone number so we can reply.'; }
+        return;
       }
+
+      record(d);
+
+      if (send){ send.disabled = true; send.textContent = 'Sent'; }
+      if (note){
+        note.className = '';
+        note.textContent = 'Thank you. Your enquiry is with us, we reply within one working day.';
+      }
+
+      setTimeout(function(){
+        form.reset();
+        syncSize(); syncDial(); refreshWa();
+        if (send){ send.disabled = false; send.textContent = 'Send enquiry'; }
+      }, 2500);
     });
   }
 })();
